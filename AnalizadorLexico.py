@@ -44,6 +44,21 @@ class AnalizadorLexico:
             simboloEntrada, tipoOperador
         )  # Crea el token y lo guarda en la lista de tokens
 
+    def transicionTres(self, simboloEntrada: str):
+        self._estadoActual = "Q2"
+        self._pila.pop()
+        self._pila.append(simboloEntrada)
+        crearToken(simboloEntrada, "PARENTESIS_IZQUIERDO")
+
+    def transicionCuatro(self, simboloEntrada: str):
+        self._estadoActual = "Q2"  # Transición cuatro
+        self._pila.pop()
+        crearToken(simboloEntrada, "PARENTESIS_DERECHO")
+
+    def transicionCinco(self):
+        self._estadoActual = "Q1"
+        self._pila.pop()
+
     def funcionTransicion(self, simboloEntrada: str):
         estado = self._estadoActual
         pila = self._pila
@@ -73,8 +88,7 @@ class AnalizadorLexico:
                 elif simboloEntrada in simbolosTerminales["operadores"]:
                     self.transicionDos(simboloEntrada)
                 elif simboloEntrada == ")":
-                    estado = "Q2"  # Transición cuatro
-                    pila.pop()
+                    self.transicionCuatro(simboloEntrada)
                 else:
                     return 99
 
