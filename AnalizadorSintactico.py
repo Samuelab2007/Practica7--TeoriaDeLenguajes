@@ -1,10 +1,14 @@
-# Herramienta formal: Gramática libre de contexto atribuida.
+# Analizador sintáctico descendente recursivo, que utiliza una gramática libre de contexto atribuida.
 
 # Entrada: Tokens con el tipo de token
-# Procesamiento: Intenta generar la lista de tokens usando la gramática y construye el árbol sintáctico.
-# Salida: Validez sintáctica y el resultado de la operación (recorriendo el árbol)
+# Procesamiento: Intenta generar la lista de tokens usando las reglas gramaticales.
+# Cada regla de producción se implementa mediante un método en la clase AnalizadorSintactico
+# Salida: Validez sintáctica y el resultado de la operación
 
-import AnalizadorLexico
+# Reglas de producción
+# <expr> --> <term> | <term>+<expr> | <term>-<expr>
+# <term> --> <factor> | <factor>*<term> | <factor>/<term>
+# <factor> --> <num> | (<expr>)         <num> puede expresar cualquier número entero positivo.
 
 
 class AnalizadorSintactico:
@@ -12,19 +16,16 @@ class AnalizadorSintactico:
         self._listaTokenEntrada = listaToken
         self.pos = 0
         self._simboloInicial = "<expr>"
-        self._reglasProduccion = {
-            "<expr>": ["<term>", "<term>+<expr>", "<term>-<expr>"],
-            "<term>": ["<factor>", "<factor>*<term>", "<factor>/<term>"],
-            "<factor>": ["<num>", "(<expr>)"],
-            "<num>": [],  # <num> puede expresar cualquier numero entero positivo.
-        }
-        self._reglasSemanticas = []
 
     def getListaTokens(self):
         return self._listaTokenEntrada
 
     def parse(self):
-        return self.expr()
+        resultado = self.expr()
+        if self.pos != len(self.getListaTokens()):
+            raise ValueError("Expresión inválida")
+        else:
+            return resultado
 
     def expr(
         self,
@@ -72,17 +73,4 @@ class AnalizadorSintactico:
             self.pos += 1
             return result
         else:
-            raise ValueError("Se esperaba un numero entero")
-
-
-Lexer = AnalizadorLexico.AnalizadorLexico("(23+(2-9)*#)")
-Lexer.determinaraceptacion()
-tokens = Lexer.getListaTokens()
-
-print(tokens)
-try:
-    Parser = AnalizadorSintactico(tokens)
-    print(Parser.parse())
-except IndexError:
-    print("Expresión Inválida")
-# TODO: Planteamiento formal de la gramática atribuida.
+            raise ValueError("Se esperaba un numero entero positivo")
