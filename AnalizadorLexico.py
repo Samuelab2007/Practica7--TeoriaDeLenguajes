@@ -1,9 +1,6 @@
-# Herramienta formal: Autómata.
-
 # Entrada: Operación de la calculadora. Ej: 2+3*5
-# Procesamiento: Recorre la entrada de la calculadora, cambiando de estados,
-# verificando la validez dependiendo del estado y la entrada, y a cada paso se genera la lista de tokens.
-# Salida: Verificación léxica y lista de tokens (token, tipo)
+# Procesamiento: Recorre la entrada de la calculadora y construye la lista de tokens dependiendo del caracter que lea.
+# Salida: Lista de tokens (tipo, valor)
 
 
 class AnalizadorLexico:
