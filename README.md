@@ -1,2 +1,2 @@
 # Practica7--TeoriaDeLenguajes
-Analizador sintáctico para una calculadora simple
+Analizador léxico y analizador sintáctico para una calculadora simple
